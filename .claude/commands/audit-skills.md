@@ -59,7 +59,56 @@ Si el usuario no pasa argumentos, analiza estas tres. Para cada una, busca su ub
 
 Ejecuta los pasos **en orden**. No te saltes ninguno. **No empieces a copiar archivos hasta haber terminado la Fase 3 y recibido aprobación explícita.**
 
-### Fase 1 — Reconocimiento (solo lectura)
+### Fase 0 — Diagnóstico del proyecto (solo lectura, dentro del repo del usuario)
+
+Antes de mirar las skills externas, levanta una foto del proyecto destino para poder **adaptar las skills con criterio, no genéricamente**. Inspecciona y resume:
+
+1. **Stack y dependencias**: lenguaje principal, framework, gestor de paquetes, versiones. Mira (los que existan): `package.json`, `pnpm-lock.yaml`, `requirements.txt`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `composer.json`, `Gemfile`, `pom.xml`, `build.gradle`.
+2. **Estructura**: monorepo vs single-package; carpetas raíz (`src/`, `apps/`, `packages/`, `services/`); presencia de `turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `lerna.json`.
+3. **Convenciones internas**: existencia y contenido relevante de `README.md`, `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md`, `.editorconfig`, configs de linters/formatters (`.eslintrc*`, `biome.json`, `ruff.toml`, `.prettierrc*`), hooks de git (`.husky/`, `lefthook.yml`, `.pre-commit-config.yaml`).
+4. **Flujo de trabajo**: scripts de `package.json` (`test`, `build`, `dev`, `lint`, `typecheck`), `Makefile`, CI/CD en `.github/workflows/`, `.gitlab-ci.yml`, `azure-pipelines.yml`.
+5. **Issue tracker**: GitHub Issues (carpeta `.github/ISSUE_TEMPLATE/`), referencias a Linear/Jira/Notion en docs, o markdown local en `docs/`.
+
+**Si el repo está vacío o es un proyecto nuevo**, dilo explícitamente y pregunta al usuario qué stack planea usar antes de continuar — no inventes contexto.
+
+Escribe los hallazgos en `.claude/skills/CONTEXT.md` con esta plantilla (máx. **una página**, sin relleno):
+
+```markdown
+# Contexto del proyecto (para skills)
+
+> Generado por /audit-skills el <fecha>. Las skills leen este archivo cuando se activan, no en cada turno. Mantén breve y actualizado.
+
+## Stack
+- Lenguaje principal: …
+- Framework(s): …
+- Gestor de paquetes: …
+- Versiones clave: …
+
+## Estructura
+- Tipo: monorepo / single-package / …
+- Carpetas relevantes: …
+
+## Convenciones
+- Linter/formatter: …
+- Hooks de git: …
+- Docs internas: AGENTS.md / CLAUDE.md / CONTRIBUTING.md (citar las que existan)
+
+## Flujo de trabajo
+- Tests: `<comando>`
+- Build: `<comando>`
+- Lint/typecheck: `<comando>`
+- CI: <plataforma + ruta del workflow>
+
+## Issue tracker
+- …
+
+## Notas para las skills
+- Cosas no obvias del proyecto que una skill debería respetar (p.ej. "no tocar `legacy/`", "PRs requieren issue enlazado", "tests en Vitest, no Jest").
+```
+
+Muestra el `CONTEXT.md` resultante al usuario al terminar la fase.
+
+### Fase 1 — Reconocimiento del repo de skills (solo lectura)
 
 1. Si el repo `mattpocock/skills` aún no está clonado localmente, clónalo en una ruta **temporal fuera del repo del usuario**. En Windows usa `$env:TEMP\mattpocock-skills-audit`; en Unix usa `/tmp/mattpocock-skills-audit`:
 
@@ -113,8 +162,12 @@ Una vez auditadas todas, responde:
    ```
 
 2. Para cada skill aprobada:
-   - Copia el `SKILL.md` adaptado (no el original tal cual).
-   - **Reescribe el frontmatter / `description`** para que dispare correctamente en el contexto del proyecto y no choque con otras.
+   - Copia el `SKILL.md` **adaptado al stack y convenciones detectados en `CONTEXT.md`** (no el original tal cual). Reemplaza ejemplos genéricos por comandos/rutas reales del proyecto cuando aplique (p.ej. usar `pnpm test` si el proyecto usa pnpm, citar el linter real, etc.). Mantén el archivo conciso.
+   - **Reescribe el `description` del frontmatter** siguiendo estas reglas estrictas:
+     - Debe describir **cuándo** se activa la skill, no qué hace (Claude Code la usa para enrutar).
+     - Debe ser **mutuamente excluyente** con las otras skills instaladas — sin solapes de palabras clave.
+     - **No** debe contener frases que provoquen autoinvocación en cada turno ("siempre", "en cada respuesta", "antes de responder"). Las skills deben dispararse solo cuando el contexto del usuario coincide con su propósito.
+     - Añade en el cuerpo del `SKILL.md` una línea citando: `> Lee .claude/skills/CONTEXT.md al activarte para conocer el stack del proyecto.`
    - Elimina referencias a archivos/scripts de `mattpocock/skills` que no vayas a copiar.
    - Añade al inicio del `SKILL.md` un bloque de **procedencia** y **fecha de auditoría**:
 
@@ -127,9 +180,9 @@ Una vez auditadas todas, responde:
      -->
      ```
 
-3. Crea/actualiza `.claude/skills/README.md` con una tabla: nombre, propósito, cuándo dispara, dependencias.
+3. Crea/actualiza `.claude/skills/README.md` con una tabla: nombre, **trigger (cuándo se activa)**, propósito, dependencias. Deja claro que las skills viven versionadas en el repo y se activan **solo** cuando el contexto coincide con su `description`.
 4. Crea/actualiza `.gitignore` con entradas que eviten commitear secretos si alguna skill los usa.
-5. **NO** modifiques `~/.claude/` global. Todo va dentro del repo.
+5. **NO** modifiques `~/.claude/` global, ni `AGENTS.md`/`CLAUDE.md` del repo, ni ninguna configuración fuera de `.claude/skills/`. Si crees que hace falta tocar algo fuera, **pídelo primero** vía `AskUserQuestion`.
 
 ### Fase 5 — Verificación final
 
@@ -137,10 +190,11 @@ Una vez auditadas todas, responde:
 - Muestra el `tree` final de `.claude/skills/` (usa `Glob` con patrón `.claude/skills/**/*`).
 - Confirma checklist:
   - [ ] Ninguna skill descartada quedó instalada.
-  - [ ] Ningún archivo fuera del repo fue modificado.
+  - [ ] Ningún archivo fuera de `.claude/skills/` fue modificado.
   - [ ] Ninguna skill ejecuta código en `install` time.
-  - [ ] Las `description` son mutuamente excluyentes.
-  - [ ] README de skills creado.
+  - [ ] Las `description` son **mutuamente excluyentes** y no contienen disparadores genéricos ("siempre", "en cada turno").
+  - [ ] `CONTEXT.md` creado y referenciado desde cada skill.
+  - [ ] README de skills creado con tabla de triggers.
 
 ---
 
@@ -158,4 +212,4 @@ Una vez auditadas todas, responde:
 
 Trabaja por fases, marcando claramente cuándo terminas cada una. Al final de las **Fases 3**, **detente y espera confirmación** antes de continuar. No avances a la Fase 4 sin un "ok, procede" del usuario.
 
-**Empieza por la Fase 1 ahora.**
+**Empieza por la Fase 0 (diagnóstico del proyecto) ahora.**
