@@ -13,7 +13,7 @@ Eres un **ingeniero senior** especializado en seguridad, arquitectura de softwar
 3. Sea **agnóstico de agente** (funcione igual en Claude Code, Cursor, Codex, Copilot, Aider, etc.).
 4. Sea **reutilizable** en otros proyectos con mínimo esfuerzo.
 
-Repositorio público de referencia (a tratar con criterio crítico, no copiando): https://github.com/mattpocock/skills.
+Repositorio público de referencia (a tratar con criterio crítico, no copiando): <https://github.com/mattpocock/skills>.
 
 **Skills a auditar:** $ARGUMENTS
 (Si está vacío, usa por defecto: `grill-me, caveman, diagnose`.)
@@ -76,7 +76,7 @@ Si mañana se cambia de Claude Code a Cursor, **no se reescriben skills**. Se re
 
 ## 📂 ESTRUCTURA OBLIGATORIA DEL REPOSITORIO
 
-```
+```text
 .ai/
 ├── skills/                          ← FUENTE DE VERDAD (agnóstica)
 │   ├── README.md                    ← índice y guía de uso
@@ -105,7 +105,7 @@ Si mañana se cambia de Claude Code a Cursor, **no se reescriben skills**. Se re
 1. El contenido vive **solo** en `.ai/skills/`. Los adaptadores no duplican: traducen.
 2. Los archivos en `.claude/`, `.cursor/`, `AGENTS.md`, etc. son **artefactos generados** con cabecera:
 
-   ```
+   ```text
    <!-- GENERATED FROM .ai/skills/<name> — DO NOT EDIT MANUALLY -->
    ```
 
@@ -154,7 +154,7 @@ Guarda el resultado en `.ai/skills/CONTEXT.md` (≤ 1 página, denso, sin paja).
 
 Para **cada** skill encontrada, produce este mini-informe **literal**:
 
-```
+```text
 ### Skill: <nombre>
 - Ruta en el repo de origen: <ruta>
 - Commit hash auditado: <hash>
@@ -245,13 +245,13 @@ Crea también `.ai/skills/README.md` con tabla: nombre · propósito · cuándo 
 
 Crea `.ai/adapters/<agente>/` para los agentes que **conozcas bien**. Mapeo objetivo:
 
-| Agente       | Output                                                                 |
-|--------------|------------------------------------------------------------------------|
+| Agente       | Output                                                                    |
+|--------------|---------------------------------------------------------------------------|
 | Claude Code  | `.claude/skills/<name>/SKILL.md` (con frontmatter `name` + `description`) |
 | Cursor       | `.cursor/rules/<name>.mdc` (con frontmatter `description` + `globs`)      |
-| Codex        | `AGENTS.md` (un archivo con secciones por skill)                       |
-| Copilot      | `.github/copilot-instructions.md` (concatenado)                        |
-| Aider        | `CONVENTIONS.md` (concatenado)                                         |
+| Codex        | `AGENTS.md` (un archivo con secciones por skill)                          |
+| Copilot      | `.github/copilot-instructions.md` (concatenado)                           |
+| Aider        | `CONVENTIONS.md` (concatenado)                                            |
 
 Si **no conoces el formato exacto y vigente** de algún adaptador, **dilo** en lugar de inventarlo. Si hace falta, usa `WebSearch`/`WebFetch` para verificar. Mejor 3 adaptadores correctos que 5 ficticios.
 

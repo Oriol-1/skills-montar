@@ -23,13 +23,13 @@ El prompt incluye:
    a `.claude/commands/` del proyecto destino (créala si no existe).
 2. En Claude Code, ejecuta:
 
-   ```
+   ```text
    /audit-skills
    ```
 
    o con skills concretas:
 
-   ```
+   ```text
    /audit-skills grill-me, diagnose
    ```
 
@@ -50,7 +50,7 @@ y pégalo como mensaje. Funciona igual de bien.
 
 ## Arquitectura objetivo que el prompt construye
 
-```
+```text
 .ai/
 ├── skills/                          ← FUENTE DE VERDAD (agnóstica)
 │   ├── README.md
@@ -85,7 +85,7 @@ los adaptadores con `.ai/build-all.sh`.
 
 ## Estructura de este repo
 
-```
+```text
 .
 ├── .claude/
 │   └── commands/
