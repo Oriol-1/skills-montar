@@ -6,3 +6,19 @@
 AGENTS.md
 .github/copilot-instructions.md
 CONVENTIONS.md
+
+# Defensa: archivos sensibles que nunca deben versionarse
+# (recomendación de security-audit paso 5).
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+credentials
+credentials.*
+secrets
+secrets.*
