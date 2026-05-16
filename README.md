@@ -156,7 +156,11 @@ Esto genera `.claude/skills/{grill-me,diagnose,security-audit}/SKILL.md`.
 Claude Code las detecta automáticamente al arrancar en este directorio.
 
 > Los artefactos `.claude/skills/` están en `.gitignore`. La fuente de
-> verdad es `.ai/skills/`; los artefactos se regeneran.
+> verdad es `.ai/skills/`; los artefactos se regeneran. El `.gitignore`
+> también lleva, por defensa, patrones de archivos sensibles
+> (`.env`, `.env.*`, `*.pem`, `*.key`, `id_rsa*`, `id_ed25519*`,
+> `credentials*`, `secrets*`) para prevenir commits accidentales —
+> recomendación derivada del paso 5 de `security-audit`.
 
 ### Verificar que todo funciona
 
