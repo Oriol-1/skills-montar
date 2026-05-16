@@ -9,12 +9,14 @@ de producción: solo Markdown + bash de adaptador. Cumple dos roles:
    otros proyectos vía los slash commands `/audit-skills` y `/install-skills`.
 
 ## Stack
+
 - Markdown como contenido principal.
 - Bash puro (sin dependencias externas) para los adaptadores.
 - Idioma del contenido: español.
 - Sin gestor de paquetes, sin runtime, sin tests automáticos, sin CI.
 
 ## Estructura
+
 - `.ai/skills/` — fuente de verdad (3 skills + CONTEXT + README).
 - `.ai/adapters/claude-code/` — adaptador a `.claude/skills/`.
 - `.ai/build-all.sh` — orquestador de adaptadores.
@@ -27,6 +29,7 @@ de producción: solo Markdown + bash de adaptador. Cumple dos roles:
 - `README.md` — guía profunda de uso.
 
 ## Convenciones
+
 - Markdown estricto: code fences con lenguaje, sin URLs desnudas, tablas alineadas.
 - Un solo autor (Ori). Sin PRs ni revisión de pares formalizada.
 - Repositorio en `main`, sin ramas activas.
@@ -35,6 +38,7 @@ de producción: solo Markdown + bash de adaptador. Cumple dos roles:
   el otro.
 
 ## Flujo de trabajo
+
 - Editar contenido **solo** en `.ai/skills/<name>/` y regenerar artefactos
   con `bash .ai/build-all.sh`.
 - Nunca editar `.claude/skills/` directamente (se sobrescribe).
@@ -44,6 +48,7 @@ de producción: solo Markdown + bash de adaptador. Cumple dos roles:
 No declarado.
 
 ## Implicaciones para las skills
+
 - `grill-me` y `diagnose` aplican principalmente a proyectos *descendentes*
   que adoptan el catálogo (este repo es texto, no código que depurar).
 - `security-audit` sí aplica directamente: el repo es público potencial y
