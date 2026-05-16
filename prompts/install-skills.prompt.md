@@ -107,8 +107,14 @@ Para cada skill aprobada:
 1. Crear `.ai/skills/<name>/` y copiar `SKILL.md` + `meta.yml`.
 2. **No copies** el `CONTEXT.md` ni el `README.md` del fuente.
 
-Si el destino no tiene `.ai/adapters/`, copia `claude-code/` + `build-all.sh`
-desde el fuente. Si ya existen, **no toques**.
+Si el destino no tiene `.ai/adapters/`, **audita primero** los scripts del
+fuente (`build.sh`, `clean.sh`, `build-all.sh`) — se ejecutarán en Fase 7.
+Mini-informe literal por script: líneas, `set -euo pipefail`, comandos
+destructivos, llamadas de red, escrituras fuera de scope, `$(...)`/backticks
+sobre input externo, veredicto ✅/❌. Si algún script falla, **aborta la
+copia del adaptador** y reporta; las skills se copian igual pero el build
+queda pendiente. Después copia `claude-code/` + `build-all.sh`. Si ya
+existen en destino, **no toques**.
 
 Genera un `.ai/skills/README.md` mínimo en destino con tabla y aviso de
 revisión humana.

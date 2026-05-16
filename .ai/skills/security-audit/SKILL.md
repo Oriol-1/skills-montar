@@ -46,7 +46,9 @@ Lista **cerrada**. No se ejecutan comandos fuera de esta lista.
    d. `trivy fs --scanners vuln,config,secret .` si aplica.
 5. **Checks manuales adicionales** (sin ejecutar nada destructivo):
    - ¿`.gitignore` cubre `.env*`, `*.pem`, `*.key`, `id_rsa*`, `credentials*`?
-   - ¿Hay archivos sensibles versionados? (`git ls-files | grep -iE '\.env|secret|credential|\.pem$|\.key$'`)
+   - ¿Hay archivos sensibles versionados? (`git ls-files | grep -iE '\.env|secret|credential|\.pem$|\.key$'`).
+     **Este comando solo lista nombres; los archivos identificados NO se
+     leen a continuación bajo ninguna circunstancia.**
    - ¿Permisos de archivos sensibles si existen? (`ls -la`, sin abrir el contenido).
    - ¿`README` u otros docs filtran URLs internas, IPs, hostnames?
 6. **Consolidar** todos los hallazgos en un informe único.

@@ -110,12 +110,16 @@ recomendarlo al usuario tras el fix, no antes.
 - Recomendación arquitectónica si procede.
 
 ## Guardrails
+- **NUNCA modifica archivos del proyecto** (código, configuración, tests)
+  sin un "ok" explícito del usuario en esta activación concreta. La
+  instrumentación temporal cuenta: pedir permiso antes de añadirla.
 - NUNCA proceder a hipotetizar sin un bucle de reproducción.
 - NUNCA "loguear todo y filtrar": solo probes dirigidos a hipótesis.
 - NUNCA escribir un regression test en un seam incorrecto: dar falsa
   confianza es peor que no tener test.
 - NUNCA dejar logs `[DEBUG-...]` o prototipos sin borrar al cerrar.
 - NUNCA cambiar más de una variable a la vez durante instrumentación.
+- NUNCA hace `git commit`, `git push` ni reescribe historial.
 
 ## Project context
 Read `.ai/skills/CONTEXT.md` before applying this skill. Adapt the feedback

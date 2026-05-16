@@ -99,7 +99,7 @@ planeado antes de continuar. **No reutilizar el `CONTEXT.md` del repo fuente.**
 2. Para cada skill a instalar, **scan de conflictos** en destino:
 
    | Conflicto | Comprobación | Acción |
-   |---|---|---|
+   | --- | --- | --- |
    | `.ai/skills/<name>/` ya existe en destino | `test -d` | Mostrar diff con `meta.yml` ambos lados y preguntar: sobrescribir / saltar / abortar |
    | `.claude/skills/<name>/` ya existe en destino | `test -d` | Idem |
    | Otra skill del destino usa el mismo `description` | Grep `description:` en `.ai/skills/*/meta.yml` y `.claude/skills/*/SKILL.md` frontmatter | Marcar y avisar: el usuario decide qué activación priorizar |
@@ -142,11 +142,31 @@ Para cada skill aprobada:
 3. **No copiar** `<temp-path>/.ai/skills/CONTEXT.md` ni
    `<temp-path>/.ai/skills/README.md`. El `CONTEXT.md` se generó en Fase 1.
 
-Si el destino no tiene adaptador, copiar el adaptador Claude Code:
+Si el destino no tiene adaptador, **auditar y luego copiar** el adaptador
+Claude Code:
 
-1. `<temp-path>/.ai/adapters/claude-code/` → `.ai/adapters/claude-code/`.
-2. `<temp-path>/.ai/build-all.sh` → `.ai/build-all.sh`.
-3. `chmod +x` a los `.sh`.
+1. **Pre-audit obligatoria** de los scripts (`build.sh`, `clean.sh`,
+   `build-all.sh`) antes de copiar — los `bash` se ejecutarán en Fase 7.
+   Mini-informe literal por script:
+
+   ```text
+   ### Script: <ruta>
+   - Líneas: <N>
+   - Usa `set -euo pipefail`: <sí/no>
+   - Comandos destructivos (`rm -rf`, `curl|sh`, `eval`, `sudo`): <sí/no — citar>
+   - Llamadas de red: <sí/no — citar>
+   - Escrituras fuera de .ai/, .claude/skills/, .gitignore: <sí/no — citar>
+   - `$(...)`/backticks que ejecuten comandos sobre input externo: <sí/no>
+   - Veredicto: ✅ SEGURO / ❌ DESCARTADO
+   ```
+
+   Si algún script falla la auditoría, **abortar la copia del adaptador**
+   y reportar; las skills se copian igual pero el build queda pendiente
+   hasta resolver.
+
+2. Copiar `<temp-path>/.ai/adapters/claude-code/` → `.ai/adapters/claude-code/`.
+3. Copiar `<temp-path>/.ai/build-all.sh` → `.ai/build-all.sh`.
+4. `chmod +x` a los `.sh`.
 
 Si el destino ya tiene `.ai/adapters/`, **no tocar**: respeta su arquitectura.
 
