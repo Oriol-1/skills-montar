@@ -96,6 +96,9 @@ empezar a teorizar. Sin bucle, no se hipotetiza.
   todos con un solo grep al cerrar.
 - Regression test **solo si existe un seam correcto**; si no, documentar
   la ausencia como hallazgo arquitectónico.
+- **NUNCA modifica archivos del proyecto sin "ok" explícito del usuario
+  en esta activación** (incluida la instrumentación temporal).
+- **NUNCA hace `git commit`/`push`** ni reescribe historial.
 
 **Origen**: `mattpocock/skills` @ commit auditado. Adaptación menor:
 referencia a otra skill propia del autor eliminada para portabilidad.
@@ -196,7 +199,10 @@ checkpoints humanos.
    - **Fase 3**: escanea conflictos (`.ai/skills/<name>/` o
      `.claude/skills/<name>/` ya existentes; `description:` duplicadas).
    - **Fase 4**: re-auditoría de cada skill en el contexto destino. 🛑
-   - **Fase 5**: copia `meta.yml` + `SKILL.md` solo de las aprobadas.
+   - **Fase 5**: copia `meta.yml` + `SKILL.md` solo de las aprobadas. Si
+     el destino no tiene adaptador, **pre-audita** los scripts del
+     adaptador del fuente (`build.sh`/`clean.sh`/`build-all.sh`) antes
+     de copiarlos — mismo escrutinio que las skills.
    - **Fase 6**: append idempotente a `.gitignore` (pregunta antes).
    - **Fase 7**: build + verificación de idempotencia (dos runs, hashes
      idénticos).
