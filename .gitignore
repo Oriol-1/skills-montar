@@ -1,0 +1,8 @@
+# Artefactos generados por adaptadores en .ai/adapters/<agente>/build.sh
+# Fuente de verdad: .ai/skills/. Regenerar con: bash .ai/build-all.sh
+
+.claude/skills/
+.cursor/rules/
+AGENTS.md
+.github/copilot-instructions.md
+CONVENTIONS.md

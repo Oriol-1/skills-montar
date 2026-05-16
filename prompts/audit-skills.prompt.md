@@ -6,6 +6,12 @@
 > destino y ejecuta `/audit-skills` (opcionalmente con argumentos:
 > `/audit-skills grill-me, diagnose`).
 
+<!--
+⚠️ SYNC NOTICE: este archivo y `.claude/commands/audit-skills.md` mantienen el
+mismo contenido funcional con dos estilos (1ª persona aquí, 3ª persona allí).
+Si editas uno, edita el otro. El catálogo, Norma 0 y Anexo A deben coincidir.
+-->
+
 ---
 
 # 🎯 MISIÓN MAESTRA — Sistema de skills agnóstico, seguro y adaptado al proyecto
@@ -72,7 +78,6 @@ El catálogo es **extensible**. Para añadir una skill nueva: agregar fila a la 
 | Nombre          | Origen              | Propósito (1 línea)                                                 | Diseño / Anexo                       |
 |-----------------|---------------------|---------------------------------------------------------------------|--------------------------------------|
 | grill-me        | mattpocock/skills   | Validar/endurecer decisiones técnicas con preguntas exigentes.      | en repo origen                       |
-| caveman         | mattpocock/skills   | Reducir tokens / forzar respuestas concisas (verificar existencia). | en repo origen                       |
 | diagnose        | mattpocock/skills   | Bucle de depuración: reproducir → minimizar → hipótesis → fix.      | en repo origen                       |
 | security-audit  | `<propia>`          | Auditoría read-only orquestando gitleaks/semgrep/trivy/audits.      | Anexo A (auto-auditoría obligatoria) |
 
@@ -84,7 +89,6 @@ Si pasas argumentos al lanzar el prompt, filtra el catálogo a esas skills. Si n
 
 - `grill-me` → activa **antes** de codear, ante decisiones de diseño.
 - `diagnose` → activa **cuando algo falla** y hay que depurar.
-- `caveman` (o alternativa) → activa cuando pides concisión.
 - `security-audit` → activa cuando pides **auditoría de seguridad / secrets / vulnerabilidades**, antes de releases o de hacer público un repo.
 
 ---
@@ -150,7 +154,6 @@ Aplica únicamente a entradas del catálogo cuyo `Origen` sea un repo externo. L
 2. Lista la estructura.
 3. Localiza skills objetivo:
    - **`grill-me`** → validar decisiones técnicas antes de codear.
-   - **`caveman`** → ⚠️ verifica que existe **realmente**. Si no, repórtalo como **NO ENCONTRADA** y propón alternativa (concisión / reducción de tokens). No la inventes.
    - **`diagnose`** → bucle de depuración: reproducir → minimizar → hipótesis → instrumentar → corregir → test de regresión.
 4. Captura el **commit hash actual** del clon.
 

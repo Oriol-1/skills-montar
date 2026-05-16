@@ -4,6 +4,12 @@ argument-hint: "[skills separadas por coma — opcional, por defecto todo el cat
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, AskUserQuestion
 ---
 
+<!--
+⚠️ SYNC NOTICE: este archivo y `prompts/audit-skills.prompt.md` mantienen el
+mismo contenido funcional con dos estilos (3ª persona aquí, 1ª persona allí).
+Si editas uno, edita el otro. El catálogo, Norma 0 y Anexo A deben coincidir.
+-->
+
 # 🎯 MISIÓN MAESTRA — Sistema de skills agnóstico, seguro y adaptado al proyecto
 
 Eres un **ingeniero senior** especializado en seguridad, arquitectura de software y diseño de sistemas de agentes de IA. Vas a construir, dentro de este repositorio, un sistema de skills propio que:
@@ -16,7 +22,7 @@ Eres un **ingeniero senior** especializado en seguridad, arquitectura de softwar
 Repositorio público de referencia (a tratar con criterio crítico, no copiando): <https://github.com/mattpocock/skills>.
 
 **Skills a auditar:** $ARGUMENTS
-(Si está vacío, usa por defecto: `grill-me, caveman, diagnose`.)
+(Si está vacío, usa por defecto: `grill-me, diagnose, security-audit`.)
 
 Trabajarás **por fases con checkpoints**. No avances a la siguiente fase sin confirmación explícita (`ok, procede`).
 
@@ -81,7 +87,6 @@ El catálogo es **extensible**. Para añadir una skill nueva: agregar fila a la 
 | Nombre          | Origen              | Propósito (1 línea)                                                 | Diseño / Anexo                       |
 |-----------------|---------------------|---------------------------------------------------------------------|--------------------------------------|
 | grill-me        | mattpocock/skills   | Validar/endurecer decisiones técnicas con preguntas exigentes.      | en repo origen                       |
-| caveman         | mattpocock/skills   | Reducir tokens / forzar respuestas concisas (verificar existencia). | en repo origen                       |
 | diagnose        | mattpocock/skills   | Bucle de depuración: reproducir → minimizar → hipótesis → fix.      | en repo origen                       |
 | security-audit  | `<propia>`          | Auditoría read-only orquestando gitleaks/semgrep/trivy/audits.      | Anexo A (auto-auditoría obligatoria) |
 
@@ -93,7 +98,6 @@ Si el usuario pasa `$ARGUMENTS`, filtra el catálogo a esas skills. Si está vac
 
 - `grill-me` → activa **antes** de codear, ante decisiones de diseño.
 - `diagnose` → activa **cuando algo falla** y hay que depurar.
-- `caveman` (o alternativa) → activa cuando el usuario pide concisión.
 - `security-audit` → activa cuando el usuario pide **auditoría de seguridad / secrets / vulnerabilidades**, antes de releases o de hacer público un repo.
 
 ---
@@ -172,7 +176,6 @@ Aplica únicamente a las entradas del catálogo cuyo `Origen` sea un repo extern
 2. Lista la estructura completa con `Glob` (patrón `**/SKILL.md`).
 3. Localiza las skills objetivo:
    - **`grill-me`** → validar decisiones técnicas con preguntas exigentes antes de codear.
-   - **`caveman`** → ⚠️ verifica primero si existe **realmente** en este repo. Si no, repórtalo como **NO ENCONTRADA** y propón alternativa equivalente (concisión / reducción de tokens). No la inventes.
    - **`diagnose`** → bucle disciplinado de depuración: reproducir → minimizar → hipótesis → instrumentar → corregir → test de regresión.
 4. Captura el **commit hash actual** del clon con `git -C <ruta-temporal> rev-parse HEAD` para trazabilidad.
 

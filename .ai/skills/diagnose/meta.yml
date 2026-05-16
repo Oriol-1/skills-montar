@@ -1,0 +1,14 @@
+name: diagnose
+description: Aplica un bucle disciplinado de depuración (reproducir → minimizar → hipotetizar → instrumentar → arreglar → regression-test) cuando el usuario reporta un bug, regresión o problema de rendimiento. No se activa para planificar ni para auditar seguridad.
+when_to_use:
+  - el usuario reporta un bug o regresión
+  - el usuario dice "no funciona" / "está roto" / "falla" / "lanza error"
+  - hay un problema de rendimiento ("más lento que antes")
+  - el usuario pide "diagnostica" / "debuggea"
+tags: [debugging, performance, testing]
+version: 1.0.0
+source:
+  repo: mattpocock/skills
+  commit: e74f0061bb67222181640effa98c675bdb2fdaa7
+  path: skills/engineering/diagnose/SKILL.md
+claude_only: false

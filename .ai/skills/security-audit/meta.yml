@@ -1,0 +1,16 @@
+name: security-audit
+description: Audita el proyecto en busca de secrets, vulnerabilidades en código y dependencias, y configuraciones inseguras, orquestando herramientas locales (gitleaks, semgrep, audits de dependencias, trivy). Solo lectura. No se activa para bugs funcionales ni para decisiones de diseño.
+when_to_use:
+  - el usuario pide auditar seguridad
+  - el usuario pregunta por secrets, credenciales o tokens expuestos
+  - el usuario pregunta por vulnerabilidades o CVEs
+  - antes de publicar un repo o hacer un release
+  - el usuario menciona "revisar" o "auditar" el proyecto en términos de seguridad
+tags: [security, audit, read-only]
+version: 1.0.0
+source:
+  repo: <propia>
+  commit: n/a
+  path: n/a
+  author: Ori
+claude_only: false

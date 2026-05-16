@@ -1,0 +1,13 @@
+name: grill-me
+description: Interroga al usuario una pregunta a la vez sobre un plan, diseño o decisión técnica hasta resolver todas las ramas del árbol de decisiones. Solo se activa antes de codear, ante decisiones de diseño; no para depurar ni para auditar.
+when_to_use:
+  - el usuario quiere validar un plan o diseño antes de implementar
+  - el usuario dice "grill me" / "stress-test esto" / "rómpeme la idea"
+  - hay una decisión técnica con varias opciones por resolver
+tags: [planning, design, decision]
+version: 1.0.0
+source:
+  repo: mattpocock/skills
+  commit: e74f0061bb67222181640effa98c675bdb2fdaa7
+  path: skills/productivity/grill-me/SKILL.md
+claude_only: false
