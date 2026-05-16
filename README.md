@@ -34,25 +34,48 @@ artefactos están ignorados en `.gitignore`: la fuente de verdad es `.ai/`.
 
 ## Usar en otro proyecto
 
-### Opción A — Copiar el catálogo curado tal cual
+### Opción A (recomendada) — Slash command `/install-skills`
 
-```bash
-cp -r .ai/ /ruta/al/otro/proyecto/
-cd /ruta/al/otro/proyecto
-bash .ai/build-all.sh
-```
-
-Las 3 skills aparecen disponibles en el nuevo repo.
-
-### Opción B — Construir un catálogo nuevo con el prompt maestro
-
-1. Copia [`.claude/commands/audit-skills.md`](.claude/commands/audit-skills.md)
+1. Copia [`.claude/commands/install-skills.md`](.claude/commands/install-skills.md)
    al `.claude/commands/` del proyecto destino.
-2. En Claude Code: `/audit-skills` (o `/audit-skills grill-me, diagnose`).
-3. El comando audita, propone y construye con checkpoints humanos.
+2. En Claude Code dentro del destino:
 
-Alternativa sin slash command: pegar [`prompts/audit-skills.prompt.md`](prompts/audit-skills.prompt.md)
-como mensaje en cualquier agente.
+   ```text
+   /install-skills
+   ```
+
+   o con subset:
+
+   ```text
+   /install-skills grill-me, diagnose
+   ```
+
+3. El comando ejecuta 8 fases con checkpoints humanos:
+   1. Diagnóstico del proyecto destino → `.ai/skills/CONTEXT.md` local 🛑
+   2. Clonar este repo a ruta temporal.
+   3. Filtrar + escanear conflictos (sin sobrescribir nada sin permiso).
+   4. Re-auditar cada skill candidata en contexto local 🛑
+   5. Copiar `meta.yml` + `SKILL.md` al destino (no copia `CONTEXT.md` ni README del fuente).
+   6. Append idempotente a `.gitignore` (preguntando antes).
+   7. Build + verificación de idempotencia.
+   8. Reporte final.
+
+   Garantías: no toca nada fuera de `.ai/`, `.claude/skills/` y `.gitignore`;
+   no instala dependencias; no hace `git commit`/`git push`.
+
+### Opción B — Pegar el prompt plano
+
+Si usas otro agente o no quieres instalar el slash command, copia
+[`prompts/install-skills.prompt.md`](prompts/install-skills.prompt.md) y
+pégalo como mensaje. Hace lo mismo.
+
+### Opción C — Construir un catálogo nuevo desde cero
+
+Para empezar con un catálogo distinto al curado, usa el prompt maestro:
+[`.claude/commands/audit-skills.md`](.claude/commands/audit-skills.md) o
+[`prompts/audit-skills.prompt.md`](prompts/audit-skills.prompt.md). Audita,
+propone y construye con checkpoints. Más pesado que `install-skills` pero
+útil si quieres meter skills nuevas.
 
 ## Arquitectura
 
